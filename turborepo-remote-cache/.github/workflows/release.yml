@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  NPM_CONFIG_PROVENANCE: true
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Release
+    permissions:
+      contents: write 
+      issues: write 
+      pull-requests: write 
+      id-token: write 
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@1b05615854632b887b69ae1be8cbefe72d3ae423 # v2.6.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        name: Checkout
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4.0.0
+        name: Install Node
+        with:
+          node-version: 18
+      - uses: pnpm/action-setup@d882d12c64e032187b2edb46d3a0d003b7a43598 # v2.4.0
+        name: Install pnpm
+        with:
+          version: 8
+      - name: Install dependencies
+        run: pnpm install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.DUCKTORS_PAT }}
+          NPM_TOKEN: ${{ secrets.DUCKTORS_NPM_TOKEN }}
+        run: pnpm dlx semantic-release
