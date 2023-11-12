@@ -20,6 +20,13 @@
         "p": [],
         "r": []
       },
+      "clientSideFeatureEnabled": {
+        "v": true,
+        "i": "23318dcd",
+        "t": 0,
+        "p": [],
+        "r": []
+      },
       "newAboutPage": {
         "v": false,
         "i": "2fd8e62c",
@@ -30,16 +37,9 @@
         ],
         "r": []
       },
-      "clientSideFeatureEnabled": {
-        "v": true,
-        "i": "23318dcd",
-        "t": 0,
-        "p": [],
-        "r": []
-      },
       "newMarketingPage": {
-        "v": true,
-        "i": "fd5f7194",
+        "v": false,
+        "i": "1cfd1b67",
         "t": 0,
         "p": [
           { "o": 0, "v": true, "p": 50, "i": "fd5f7194" },
